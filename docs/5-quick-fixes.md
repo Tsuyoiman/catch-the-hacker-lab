@@ -76,19 +76,30 @@ sudo systemctl restart wazuh-manager
 Wait 2 minutes, then test a login again.
 
 ### Broken ossec.conf
-`wazuh-manager` won't start, with `Error reading XML file 'etc/ossec.conf' (line 0)`.
+`wazuh-manager` won't start, with `Error reading XML file 'etc/ossec.conf' (line 0)`. This means a typo in the block you pasted in setup **S4**.
 
 1. Find the broken line:
    ```bash
    (echo "<root>"; sudo cat /var/ossec/etc/ossec.conf; echo "</root>") | xmllint --noout - ; echo "done"
    ```
 2. An error like `-:40: … mismatch: allowed-ips … and local_ip` means **line 39** (the number **minus 1**) is wrong.
-3. Open it: `sudo nano +39 /var/ossec/etc/ossec.conf`. Every tag must close with the **same name**, e.g. `<allowed-ips>208.8.8.0/24</allowed-ips>`.
-4. Save, then:
+3. Open it: `sudo nano +39 /var/ossec/etc/ossec.conf`. Every tag must close with the **same name**.
+4. Make the block look **exactly** like this (a closing tag with a different name, like `</local_ip>` after `<allowed-ips>`, is the usual cause):
+   ```xml
+     <remote>
+       <connection>syslog</connection>
+       <port>514</port>
+       <protocol>tcp</protocol>
+       <allowed-ips>208.8.8.0/24</allowed-ips>
+       <local_ip>0.0.0.0</local_ip>
+     </remote>
+   ```
+5. Save (**Ctrl + O** → Enter → **Ctrl + X**), then:
    ```bash
    sudo systemctl restart wazuh-manager
    sudo systemctl restart wazuh-dashboard
    ```
+   ✅ `sudo systemctl status wazuh-manager --no-pager` says **active (running)**.
 
 ### Alarms
 | Problem | Fix |

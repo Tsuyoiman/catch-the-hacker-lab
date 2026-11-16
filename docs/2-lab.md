@@ -106,11 +106,17 @@
    >
    > 💡 **Different Wazuh version?** Your numbers may differ. Find them in [setup S9](1-setup.md#-only-if-your-wazuh-version-is-different-find-your-own-numbers) and use those instead of 4724 and 4715.
 
-   **Check:**
+   **Check the numbers went in:**
    ```bash
    sudo grep -n "if_sid\|if_matched_sid" /var/ossec/etc/rules/local_rules.xml
    ```
-   ✅ The `LAB4` rules show **4724, 4715, 4724**. *(`<if_sid>5716</if_sid>` is Wazuh's own example: ignore it.)*
+   ✅ The `LAB4` rules now show **4724, 4715, 4724** (no `NUMBER1`, `NUMBER2`, `1111` or `2222` left):
+   ```
+   24:    <if_matched_sid>4724</if_matched_sid>    ← brute force
+   35:    <if_sid>4715</if_sid>                    ← backdoor
+   46:    <if_sid>4724</if_sid>                    ← AI trick
+   ```
+   *(`<if_sid>5716</if_sid>` higher up is Wazuh's own example: ignore it.)*
 
 3. Restart Wazuh:
    ```bash
@@ -118,7 +124,7 @@
    sudo systemctl status wazuh-manager --no-pager
    ```
    ✅ **active (running)**. *(Failed? See [Quick fixes](5-quick-fixes.md#alarms).)*
-4. **Check the alarms are in:**
+4. **Check all 3 alarms are in:**
    ```bash
    sudo grep -c "LAB4 ALARM" /var/ossec/etc/rules/local_rules.xml
    ```
@@ -131,6 +137,12 @@
 | 🚨 **Brute force** | 5 failed logins within 2 minutes | 10 |
 | 🚨 **Backdoor** | A new account with `privilege 15` is created | 12 |
 | 🚨 **AI trick** | A login username contains instruction-like words | 10 |
+
+5. **Test it now** (so you know the alarms work before the real mission): in SecureCRT, type **5 wrong passwords within 2 minutes**. Then Wazuh → **Threat Hunting → Events** → **Last 15 minutes** → search:
+   ```
+   rule.id:100410
+   ```
+   ✅ **"LAB4 ALARM: Brute force…"** appears. *(Nothing? See [Alarm never fires](5-quick-fixes.md#alarms) — on Wazuh 4.12.0 the failed-login rule must be **4724**.)*
 
 💬 *Say: "You just built the burglar alarm. Now let's see if it catches anyone."*
 

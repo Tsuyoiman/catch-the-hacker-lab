@@ -305,12 +305,14 @@ Your new alarms **don't start from zero**. They **build on top of** the built-in
 
 **If you're on Wazuh 4.12.0, you don't need to look anything up. Just use 4724 and 4715 in [Step 2 of the lab](2-lab.md#step-2--add-the-alarms-10-min).**
 
+> ℹ️ **You only need 2 numbers for the alarms:** the **failed login** (4724) and the **config command** (4715). The **successful login** rule (`4722`) is not used by any alarm — successful logins show up in the dashboard on their own.
+
 ### 🔎 Only if your Wazuh version is different: find your own numbers
 
-Do a **real** failed login and a **real** config command, then read the rule ID straight from the dashboard. *(This is more reliable than `wazuh-logtest`, which can show a different rule for a hand-typed line.)*
+There are two ways. **Method A (dashboard)** is the easiest and most reliable. **Method B (`wazuh-logtest`)** shows the Phase 1–3 breakdown if you want to see how Wazuh decodes a log.
 
-**1. Make the two events.** In SecureCRT:
-- open a new SSH session to `208.8.8.220` and type **one wrong password**, then
+**First, make real events.** In SecureCRT:
+- open a new SSH session to `208.8.8.220`, type **one wrong password**, then log in correctly, then
 - at `R-XX#`:
   ```
   configure terminal
@@ -319,13 +321,34 @@ Do a **real** failed login and a **real** config command, then read the rule ID 
   end
   ```
 
-**2. Read the rule IDs in the dashboard.** Wazuh → **Threat Hunting → Events** → time **Last 15 minutes**:
-- Search `full_log:LOGIN_FAILED` → open the event (click **▸**) → read **`rule.id`**. ✍️ **Number 1 = ____**
-- Search `full_log:LOGGEDCMD` → open the event → read **`rule.id`**. ✍️ **Number 2 = ____**
+#### Method A — read the rule ID in the dashboard (recommended)
+Wazuh → **Threat Hunting → Events** → time **Last 15 minutes**:
+- Search `full_log:LOGIN_FAILED` → click **▸** to open the event → read **`rule.id`**. ✍️ **Number 1 (failed login) = ____**
+- Search `full_log:LOGGEDCMD` → open the event → read **`rule.id`**. ✍️ **Number 2 (config command) = ____**
 
-> 💡 If `full_log:LOGGEDCMD` finds nothing, the `notify syslog contenttype plaintext` line is missing: paste the **S5.4** block again.
+#### Method B — see the Phases with `wazuh-logtest`
+This is the tool that shows **Phase 1 → 2 → 3**. In the **Wazuh** SecureCRT tab:
+```bash
+sudo /var/ossec/bin/wazuh-logtest
+```
+Wait for `Type one log per line`, then **paste a real log line** (copy it from the router with `show logging | include LOGIN_FAILED`, starting from the **sequence number**, e.g. `165: *Nov 16 ...`):
+```
+165: *Nov 16 18:11:50.811: %SEC_LOGIN-4-LOGIN_FAILED: Login failed [user: admin] [Source: 208.8.8.1] [localport: 22] [Reason: Login Authentication Failed] at 18:11:50 UTC Mon Nov 16 2026
+```
+Read the output:
+```
+**Phase 1: Completed pre-decoding.      ← Wazuh splits the raw log
+**Phase 2: Completed decoding.          ← it recognises "cisco-ios", mnemonic LOGIN_FAILED
+**Phase 3: Completed filtering (rules).
+        id: '4724'        ◄── THIS is Number 1
+        level: '9'
+        description: 'Cisco IOS: Failed login to the router'
+```
+✍️ **Number 1 (failed login) = the `id` in Phase 3.** Then paste a `LOGGEDCMD` line the same way for **Number 2**. Press **Ctrl + C** to exit.
 
-**3. Clean up:**
+> ⚠️ **Important:** paste a **real line with the `165: *Nov 16 ...` prefix**, exactly as the router sends it. A hand-typed line **without** the prefix can match a *different* rule and give you the wrong number (we hit this: a clean line gave `2501`, but the real logs are `4724`).
+
+**Finally, clean up:**
 ```
 configure terminal
 no interface loopback 99
