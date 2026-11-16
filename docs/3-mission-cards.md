@@ -16,7 +16,7 @@ Every card has the same **5 steps**. Only the **details** in the table change.
 >
 > **2. Get in:** connect again and log in **correctly** as `admin`.
 >
-> **3. Leave a backdoor** (paste at `R-__#`, with your backdoor name):
+> **3. Leave a backdoor** (paste in **your router**, with your backdoor name):
 > ```
 > configure terminal
 > username <backdoor> privilege 15 secret Lab4-Backdoor

@@ -150,7 +150,7 @@
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-01#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -182,7 +182,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-02#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -206,7 +206,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-03#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -238,7 +238,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-04#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -270,7 +270,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-05#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -294,7 +294,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-06#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -326,7 +326,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-07#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -358,7 +358,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-08#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -382,7 +382,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-09#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -414,7 +414,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-10#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -438,7 +438,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-11#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -470,7 +470,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-12#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -502,7 +502,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-13#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -526,7 +526,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-14#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -558,7 +558,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-15#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -582,7 +582,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-16#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -614,7 +614,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-17#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -646,7 +646,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-18#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -670,7 +670,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-19#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -702,7 +702,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-20#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -726,7 +726,7 @@ end
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-21#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -758,7 +758,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-22#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
@@ -790,7 +790,7 @@ clear logging
 
 **2. Get in:** connect again and log in **correctly** as `admin`. ✍️ Time: ____
 
-**3. Leave a backdoor:** paste at `R-XX#`:
+**3. Leave a backdoor:** paste in **your router** (SecureCRT, prompt ends with `#`):
 
 ```
 configure terminal
