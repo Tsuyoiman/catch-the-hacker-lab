@@ -2,11 +2,11 @@
 
 ### Brute force · Backdoor accounts · Hiding tracks · Wazuh SIEM · Wireshark
 
-**In one sentence:** you **hack your own lab router**, then **move one seat** and become the **SOC analyst** who investigates your neighbour's attack using **Wazuh** (SIEM) and **Wireshark** (network capture).
+**In one sentence:** you **attack a classmate's router** over the network, then become the **SOC analyst** who **investigates the attack on your own router** using **Wazuh** (SIEM) and **Wireshark** (network capture), and **defends it**.
 
 | | |
 |---|---|
-| ⏱ **Time** | Setup ≈ 30 min (once) · Lab ≈ 100 min |
+| ⏱ **Time** | Setup ≈ 30 min (once) · Lab ≈ 110 min |
 | 👤 **Who** | One PC per person. **The teacher does exactly the same steps** on their own PC and projects it |
 | 🧰 **Tools** | VMware · Wazuh VM · Cisco CSR1000V router VM · SecureCRT · Wireshark · browser |
 | ✅ **Safe** | Everything happens **inside your own virtual lab**. You only "attack" your own router |
@@ -19,10 +19,9 @@
 | # | Page | What you do | Time |
 |---|---|---|---|
 | **1** | **[Setup](docs/1-setup.md)** | Connect the router to Wazuh, paste the router config, open Wireshark | 30 min (once) |
-| **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend. **The mission and the detective card are built into this page**, so there's nothing else to open | 100 min |
+| **2** | **[The lab](docs/2-lab.md)** | Make router reachable → see a password → alarms → attack a classmate → investigate your own router → defend. **Everything is on this page.** | 110 min |
 | 🖨️ | [Detective card](docs/4-detective-card.md) | *Optional:* print version | — |
 | **3** | **[Quick fixes](docs/5-quick-fixes.md)** 🛠️ | If something doesn't work | — |
-| 🌐 | **[Cross-PC version](docs/6-cross-pc-version.md)** | *Optional:* students **attack each other's routers over the network** and defend their own, instead of moving seats | +10 min setup |
 
 ---
 
@@ -83,18 +82,21 @@ In October 2023, attackers abused a flaw in the web interface of Cisco IOS XE (t
 
 ## 🧑‍🏫 How to teach it
 
-**Format:** every student does every step on **their own PC**. The teacher does the **same steps at the same time** on the projector. Only Step 4 is different: **everyone moves one seat**.
+**Format:** every student works on **their own PC**. Routers are reachable across the classroom network (a bridged adapter — [lab Step 0](docs/2-lab.md#step-0--make-your-router-reachable-10-min-once)), so students **attack each other by IP** instead of swapping seats. The teacher posts a **seat → router IP** list and gives each student a target.
 
 | Step | Students | Teach this |
 |---|---|---|
+| 0. 🌐 Make router reachable | Add a bridged adapter, give the router a `10.3.3.x` IP | **Networking**: NAT vs bridged |
 | 1. 😲 See a password | Log in with Telnet → see the password in Wireshark → compare with SSH | **Encryption**: why we never use Telnet |
 | 2. 🛠️ Add the alarms | Paste the Wazuh rules | **Detection engineering**: a SIEM only knows its rules |
-| 3. 🔴 Be the hacker | Do the mission on **your own router**, with **your own secret choices** | **Attacker behaviour**: break in, stay (backdoor), hide |
-| 4. 🔄 Move one seat | Move to the **next PC** | — |
-| 5. 🔵 Be the detective | Investigate the neighbour's attack: Wazuh + Wireshark + router history | **Investigation, correlation, timelines** |
-| 6. 🎭 Reveal + score | The owner reads their choices, and the detective scores out of 12 | What was missed, and why |
-| 7. 🛡️ Defend | Back to your seat: delete the backdoor, `login block-for` | **Response + account protection** |
+| 3. 🔴 Attack a classmate | SSH to a classmate's router IP → brute force → plant a backdoor | **Attacker behaviour**: break in, leave a backdoor |
+| 4. 🔵 Investigate your router | A classmate attacked *you* — investigate it on your own Wazuh + Wireshark + router | **Investigation, correlation, timelines** |
+| 5. 🛡️ Defend | Remove the backdoor; layer `login block-for` + `access-class` | **Defence in depth** |
+| 6. 🔁 Attack again | Re-attack a defended router → blocked | **Proving a control works** |
+| 7. 🎭 Reveal + score | Attacker & defender compare papers, score out of 11 | What was caught, what was missed |
 | 8. ✅ Wrap-up | 5 takeaways | — |
+
+> ⚠️ **Needs the classroom network to allow PC-to-PC traffic.** Test it (lab Step 0.4). If it's blocked, fall back to each student attacking **their own** router and investigating it.
 
 **Teaching tips**
 - 🤫 **Keep each hacker's choices secret.** The surprise at the reveal is what makes it stick.
