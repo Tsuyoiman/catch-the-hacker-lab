@@ -281,9 +281,9 @@ Your new alarms **don't start from zero**. They **build on top of** the built-in
  Router log arrives:  "%SEC_LOGIN-4-LOGIN_FAILED ..."
         │
         ▼
- Built-in rule  ID 2501  →  "This is a failed login"          ← the ID you copy
+ Built-in rule  ID 4724  →  "This is a failed login"          ← the ID you copy
         │
-        ▼  (your alarm says: "only look at logs that matched rule 2501")
+        ▼  (your alarm says: "only look at logs that matched rule 4724")
  YOUR alarm  ID 100410  →  "5 of them in 2 minutes = 🚨 BRUTE FORCE"
 ```
 
@@ -296,62 +296,36 @@ Your new alarms **don't start from zero**. They **build on top of** the built-in
 
 ⚠️ That's why the number must be **exactly** the one Wazuh shows. A made-up number (like `1111`) points to a guard who doesn't exist, so your alarm never hears anything, and Wazuh may refuse to start.
 
-**1. Create one of each event.** In SecureCRT at `R-XX#`:
-```
-configure terminal
-interface loopback 99
-description setup-test
-end
-```
-*(Plus the wrong password you already typed in S8.)*
+### ✅ On Wazuh 4.12.0 (our class version) the numbers are already known:
 
-> ⚠️ If the next command shows **no** `LOGGEDCMD` line, the `notify syslog contenttype plaintext` line is missing. Paste the **S5.4** block again.
+| Number | Rule ID | What it recognises |
+|---|---|---|
+| **Number 1** | **4724** | a **failed login** to the router (`LOGIN_FAILED`) |
+| **Number 2** | **4715** | a **config command** on the router (`LOGGEDCMD`) |
 
-**2. Copy the two log lines from the router:**
-```
-show logging | include LOGIN_FAILED|LOGGEDCMD
-```
-Copy **one `LOGIN_FAILED` line** and **one `LOGGEDCMD` line**. Copy only from the **`%`** onwards, e.g.:
-```
-%SEC_LOGIN-4-LOGIN_FAILED: Login failed [user: admin] [Source: 208.8.8.1] [localport: 22] [Reason: Login Authentication Failed] at 03:12:01 UTC Mon Nov 16 2026
-%PARSER-5-CFGLOG_LOGGEDCMD: User:admin  logged command:description setup-test
-```
+**If you're on Wazuh 4.12.0, you don't need to look anything up. Just use 4724 and 4715 in [Step 2 of the lab](2-lab.md#step-2--add-the-alarms-10-min).**
 
-**3. Get the 2 ID numbers with `wazuh-logtest`.** In the **Wazuh** SecureCRT tab (prompt `[root@… ~]#`):
-```bash
-sudo /var/ossec/bin/wazuh-logtest
-```
-Wait until it says **`Type one log per line`**.
+### 🔎 Only if your Wazuh version is different: find your own numbers
 
-**3a. Paste the `LOGIN_FAILED` line → press Enter.**
-Then **scroll to `**Phase 3`** and copy the number inside **`id: '…'`**:
-```
-**Phase 3: Completed filtering (rules).
-        id: '4724'          ◄── COPY THIS NUMBER (example)
-        level: '5'
-        description: '...'
-```
-✍️ **Number 1 (failed login) = ________** ← write it down **now**, before you paste the next line.
+Do a **real** failed login and a **real** config command, then read the rule ID straight from the dashboard. *(This is more reliable than `wazuh-logtest`, which can show a different rule for a hand-typed line.)*
 
-**3b. Paste the `LOGGEDCMD` line → press Enter.**
-Again, **scroll to `**Phase 3`** and copy the number inside **`id: '…'`**:
-```
-**Phase 3: Completed filtering (rules).
-        id: '4721'          ◄── COPY THIS NUMBER (example)
-        level: '3'
-        description: '...'
-```
-✍️ **Number 2 (config command) = ________** ← write it down **now**.
+**1. Make the two events.** In SecureCRT:
+- open a new SSH session to `208.8.8.220` and type **one wrong password**, then
+- at `R-XX#`:
+  ```
+  configure terminal
+  interface loopback 99
+  description setup-test
+  end
+  ```
 
-**3c. Exit:** press **Ctrl + C**.
+**2. Read the rule IDs in the dashboard.** Wazuh → **Threat Hunting → Events** → time **Last 15 minutes**:
+- Search `full_log:LOGIN_FAILED` → open the event (click **▸**) → read **`rule.id`**. ✍️ **Number 1 = ____**
+- Search `full_log:LOGGEDCMD` → open the event → read **`rule.id`**. ✍️ **Number 2 = ____**
 
-> ⚠️ **Important**
-> - **Wazuh decides these numbers. You don't choose them.** `4724` and `4721` above are only examples. Use the numbers **your** screen shows.
-> - The output is long. If you can't see **Phase 3**, **scroll up** a little in SecureCRT.
-> - Everyone with the **same Wazuh version** gets the **same 2 numbers**. **On Wazuh 4.12.0 they are `2501` (failed login) and `4715` (config command)**, so you can check yours against these.
-> - You'll need both numbers in **Step 2 of the lab**.
+> 💡 If `full_log:LOGGEDCMD` finds nothing, the `notify syslog contenttype plaintext` line is missing: paste the **S5.4** block again.
 
-**4. Clean up the test:**
+**3. Clean up:**
 ```
 configure terminal
 no interface loopback 99

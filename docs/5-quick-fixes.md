@@ -71,7 +71,8 @@ sudo firewall-cmd --permanent --add-port=514/tcp ; sudo firewall-cmd --reload
 ### Alarms
 | Problem | Fix |
 |---|---|
-| Wazuh won't restart after adding the rules | `NUMBER1` / `NUMBER2` (or `1111` / `2222`) not replaced? On Wazuh 4.12.0: `sudo sed -i 's/NUMBER1/2501/g; s/NUMBER2/4715/g; s/>1111</>2501</g; s/>2222</>4715</g' /var/ossec/etc/rules/local_rules.xml`. Check the errors: `sudo grep -i "error" /var/ossec/logs/ossec.log \| tail -n 5` |
+| Wazuh won't restart after adding the rules | `NUMBER1` / `NUMBER2` (or `1111` / `2222`) not replaced? On Wazuh 4.12.0: `sudo sed -i 's/NUMBER1/4724/g; s/NUMBER2/4715/g; s/>1111</>4724</g; s/>2222</>4715</g; s/>2501</>4724</g' /var/ossec/etc/rules/local_rules.xml`. Check the errors: `sudo grep -i "error" /var/ossec/logs/ossec.log \| tail -n 5` |
+| Brute-force / AI-trick alarm never fires, but single logins show in Events | The failed-login alarm points at the wrong rule. On Wazuh 4.12.0 the live failed login is rule **4724**, not 2501: `sudo sed -i 's/>2501</>4724</g' /var/ossec/etc/rules/local_rules.xml` then `sudo systemctl restart wazuh-manager`. Then do **5 wrong logins within 2 minutes** |
 | Alarms added twice (`grep -c "LAB4 ALARM"` shows 6) | Open `sudo nano /var/ossec/etc/rules/local_rules.xml` and delete the **second** `<group name="lab4,cisco_ios,">` … `</group>` block. Save, then `sudo systemctl restart wazuh-manager` |
 | Rules don't fire | Test on Wazuh: `sudo /var/ossec/bin/wazuh-logtest` → paste a `LOGIN_FAILED` line **5 times** → the last one should show `id: '100410'`. If not, the number from setup **S9** is wrong |
 | Backdoor alarm doesn't fire / no `LOGGEDCMD` lines | The router must **send** config commands to the log. Check `show running-config \| section archive`: it must include `notify syslog contenttype plaintext`. If not: `configure terminal` → `archive` → `log config` → `notify syslog contenttype plaintext` → `end` → `write memory` |
