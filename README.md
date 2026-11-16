@@ -19,10 +19,9 @@
 | # | Page | What you do | Time |
 |---|---|---|---|
 | **1** | **[Setup](docs/1-setup.md)** | Connect the router to Wazuh, paste the router config, open Wireshark | 30 min (once) |
-| **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend | 100 min |
-| **3** | **[Mission cards](docs/3-mission-cards.md)** 🔴 | Your secret attack (print and cut, one per seat) | — |
-| **4** | **[Detective card](docs/4-detective-card.md)** 🔵 | Questions to answer and scoring | — |
-| **5** | **[Quick fixes](docs/5-quick-fixes.md)** 🛠️ | If something doesn't work | — |
+| **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend. **Mission cards and the detective card are built into this page**, so there's nothing else to open | 100 min |
+| 🖨️ | [Mission cards](docs/3-mission-cards.md) · [Detective card](docs/4-detective-card.md) | *Optional:* print versions for the teacher | — |
+| **3** | **[Quick fixes](docs/5-quick-fixes.md)** 🛠️ | If something doesn't work | — |
 
 ---
 
