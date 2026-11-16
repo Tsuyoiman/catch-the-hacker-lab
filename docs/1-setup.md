@@ -271,6 +271,31 @@ show logging | include Logging to
 
 🎯 Your alarms (Step 2 of the lab) build on rules Wazuh already has. You need their **ID numbers**, which can differ between Wazuh versions. You only do this once.
 
+### 🤔 What is this ID, and why do we copy it?
+
+Wazuh comes with **thousands of built-in rules**, and **each rule has an ID number**. When a log arrives, Wazuh checks it against these rules. The rule that matches **recognises** what the log is. For example: *"this is a failed login"*.
+
+Your new alarms **don't start from zero**. They **build on top of** the built-in rule that already recognised the log:
+
+```
+ Router log arrives:  "%SEC_LOGIN-4-LOGIN_FAILED ..."
+        │
+        ▼
+ Built-in rule  ID 2501  →  "This is a failed login"          ← the ID you copy
+        │
+        ▼  (your alarm says: "only look at logs that matched rule 2501")
+ YOUR alarm  ID 100410  →  "5 of them in 2 minutes = 🚨 BRUTE FORCE"
+```
+
+| You copy the ID of… | Your alarm uses it to say… |
+|---|---|
+| the rule that recognises a **failed login** (Number 1) | *"Count failed logins. 5 in 2 min = brute force"* and *"Check the username for AI tricks"* |
+| the rule that recognises a **config command** (Number 2) | *"Check config commands. A new `privilege 15` user = backdoor"* |
+
+💡 *Analogy: the built-in rule is the guard who says "that's a failed login". Your alarm is the supervisor who says "if the guard reports 5 of those in 2 minutes, sound the alarm!" The supervisor needs to know **which guard** to listen to, and that's the ID number.*
+
+⚠️ That's why the number must be **exactly** the one Wazuh shows. A made-up number (like `1111`) points to a guard who doesn't exist, so your alarm never hears anything, and Wazuh may refuse to start.
+
 **1. Create one of each event.** In SecureCRT at `R-XX#`:
 ```
 configure terminal

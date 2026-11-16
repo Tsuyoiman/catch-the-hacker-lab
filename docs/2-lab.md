@@ -100,6 +100,8 @@
    | **2501** | the built-in rule for a **failed login** (`LOGIN_FAILED`) | Brute-force + AI-trick alarms |
    | **4715** | the built-in rule for a **Cisco notification** (`LOGGEDCMD` config command) | Backdoor alarm |
 
+   > 🤔 **Why these numbers?** They're the IDs of Wazuh's **built-in rules** that already recognise *"failed login"* (2501) and *"config command"* (4715). Your alarms **build on top of them**: *"only look at logs those rules matched, then check for 5 failures / a new admin account / an AI trick."* That's what `<if_sid>` and `<if_matched_sid>` mean in the alarm code. Full explanation: [setup S9](1-setup.md#-what-is-this-id-and-why-do-we-copy-it).
+   >
    > 💡 **Different Wazuh version?** Your numbers may differ. Find them in [setup S9](1-setup.md#s9-find-the-2-rule-numbers-for-your-alarms) (`wazuh-logtest` → **Phase 3** → `id: '…'`) and use those instead of 2501 and 4715.
 
    **Check:**
