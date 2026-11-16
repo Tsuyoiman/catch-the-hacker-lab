@@ -194,6 +194,7 @@ archive
 log config
 logging enable
 logging size 200
+notify syslog contenttype plaintext
 hidekeys
 exit
 exit
@@ -215,6 +216,7 @@ write memory
 | `logging host <MY-WAZUH-IP> …` | **Sends logs to your Wazuh** |
 | `login on-failure log` / `on-success log` | Records **every login**, failed and successful |
 | `archive … log config … hidekeys` | Records **every config command** and hides passwords as `*****` |
+| `notify syslog contenttype plaintext` | **Sends** those recorded commands to the log and to Wazuh. Without it, the backdoor alarm can't work |
 | `write memory` | Saves everything (survives a reboot) |
 
 ---
@@ -277,6 +279,8 @@ description setup-test
 end
 ```
 *(Plus the wrong password you already typed in S8.)*
+
+> ⚠️ If the next command shows **no** `LOGGEDCMD` line, the `notify syslog contenttype plaintext` line is missing. Paste the **S5.4** block again.
 
 **2. Copy the two log lines from the router:**
 ```
