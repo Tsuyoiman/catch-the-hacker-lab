@@ -52,6 +52,38 @@ sudo firewall-cmd --permanent --add-port=514/tcp ; sudo firewall-cmd --reload
 | Dashboard stuck on **"API Connections / Offline"** | Wazuh: `sudo systemctl status wazuh-manager --no-pager`. If **failed**, `ossec.conf` has a mistake: see [Broken ossec.conf](#broken-ossecconf). If **running**: `sudo systemctl restart wazuh-dashboard`, wait 2 min, refresh |
 | Dashboard shows login failures that aren't from the router | Those are Wazuh's own Linux logins. Use **Events** and search `full_log:LOGIN_FAILED` |
 | Search finds nothing | Time = **Last 15 minutes** / **Last 1 hour**. Try `full_log:*LOGIN_FAILED*` or just `LOGIN_FAILED` |
+| **Logins reach Wazuh but the dashboard never updates** (nothing new appears, no matter how many times you log in) | See [Dashboard stops counting](#dashboard-stops-counting-new-events) below |
+
+### Dashboard stops counting new events
+
+Your logins show in `tcpdump` on the Wazuh VM, but the **dashboard never adds new events**. Check these in order:
+
+**1. Is the disk full?** (the most common cause)
+```bash
+df -h /
+```
+If **Use%** is **100%** (or near it), Wazuh can't save new events. Free space, then restart the indexer:
+```bash
+sudo journalctl --vacuum-size=100M
+sudo rm -f /var/ossec/logs/archives/*.log /var/ossec/logs/archives/*.json
+sudo rm -f /var/ossec/logs/ossec.log.*
+sudo find /var/ossec/logs/alerts -name "*.gz" -delete
+sudo systemctl restart wazuh-indexer
+sudo systemctl restart wazuh-manager
+```
+Check `df -h /` again — you want **Use%** well under 100%. Wait 2 minutes, then test a login.
+
+> 💡 To keep the disk from filling again, don't enable `logging to archives` and avoid `<logall>` in `ossec.conf`.
+
+**2. Did you turn logging off during the Hide step?** If you ran `no logging host …` (lab Step 3), the router stopped sending. Turn it back on:
+```
+configure terminal
+logging host <MY-WAZUH-IP> transport tcp port 514
+end
+write memory
+```
+
+**3. Did the Wazuh IP change after a restart?** `ip a` on Wazuh. If it's different from the router's `logging host`, fix the router (see [Fix the logging IP](#router--wazuh-no-logs-arriving) above).
 
 ### Broken ossec.conf
 `wazuh-manager` won't start, with `Error reading XML file 'etc/ossec.conf' (line 0)`.
