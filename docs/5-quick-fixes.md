@@ -1,0 +1,85 @@
+# 🛠️ Quick fixes
+
+⬅️ [Setup](1-setup.md) · [The lab](2-lab.md) · [README](../README.md)
+
+Find your problem, then do the fix.
+
+---
+
+## Router
+
+| Problem | Fix |
+|---|---|
+| SecureCRT can't connect to `208.8.8.220` | Router fully booted? Router network adapter = **VMnet8 (NAT)**? From the PC: `ping 208.8.8.220`. Redo setup **S5.1** in the router's VMware window |
+| SSH refused / "connection closed" on a new router | In the router's VMware window: `enable` → `configure terminal` → `hostname R-XX` → `ip domain-name lab.local` → `crypto key generate rsa modulus 2048` → `end` |
+| SSH lands at **`Router>`**, `en` says **"% No password set"** | Your account isn't full admin. Paste the **S5.4** block again (it sets `privilege 15` and `enable secret`). If you can't get in at all, type S5.1 in the router's **VMware window** |
+| Paste goes wrong (missing letters, `% Invalid input`) | SecureCRT **Line send delay = 50 ms** (setup **S5.2**), then paste again. Repeating these commands is safe |
+| Typed a wrong password in the router's **VMware window**, nothing logged | Use **SecureCRT → SSH**. Only remote (SSH/Telnet) logins are logged |
+| Locked out (Step 7) | Wait **60 seconds** |
+
+## Router → Wazuh (no logs arriving)
+
+Check in this order:
+
+| # | Check | Command | ✅ Good |
+|---|---|---|---|
+| 1 | Router sends to the **right** IP | Router: `show logging \| include Logging to` | `Logging to <MY-WAZUH-IP> … link up` |
+| 2 | Router can reach Wazuh | Router: `ping <MY-WAZUH-IP>` | `!!!!!` |
+| 3 | Wazuh firewall open | Wazuh: `sudo firewall-cmd --list-ports` | shows `514/tcp` |
+| 4 | Wazuh listening | Wazuh: `sudo ss -tulpn \| grep 514` | `LISTEN … :514` |
+| 5 | Logs actually arrive | Wazuh: `sudo tcpdump -i any port 514 -A`, then type a wrong password in SecureCRT | text with `LOGIN_FAILED` (press **Ctrl + C** to stop) |
+
+**Wrong IP (e.g. `208.8.8.222`)? Fix it** at `R-XX#`:
+```
+configure terminal
+no logging host 208.8.8.222
+logging host <MY-WAZUH-IP> transport tcp port 514
+end
+write memory
+```
+**Firewall closed? Open it** on Wazuh:
+```bash
+sudo firewall-cmd --permanent --add-port=514/tcp ; sudo firewall-cmd --reload
+```
+> 💡 After restarting your PC, check your Wazuh IP again with `ip a`. If it changed, fix the router's `logging host`.
+
+## Wazuh
+
+| Problem | Fix |
+|---|---|
+| Dashboard won't open | Use **`https://`**. Wait **2–3 minutes** after the VM boots |
+| Dashboard stuck on **"API Connections / Offline"** | Wazuh: `sudo systemctl status wazuh-manager --no-pager`. If **failed**, `ossec.conf` has a mistake: see [Broken ossec.conf](#broken-ossecconf). If **running**: `sudo systemctl restart wazuh-dashboard`, wait 2 min, refresh |
+| Dashboard shows login failures that aren't from the router | Those are Wazuh's own Linux logins. Use **Events** and search `full_log:LOGIN_FAILED` |
+| Search finds nothing | Time = **Last 15 minutes** / **Last 1 hour**. Try `full_log:*LOGIN_FAILED*` or just `LOGIN_FAILED` |
+
+### Broken ossec.conf
+`wazuh-manager` won't start, with `Error reading XML file 'etc/ossec.conf' (line 0)`.
+
+1. Find the broken line:
+   ```bash
+   (echo "<root>"; sudo cat /var/ossec/etc/ossec.conf; echo "</root>") | xmllint --noout - ; echo "done"
+   ```
+2. An error like `-:40: … mismatch: allowed-ips … and local_ip` means **line 39** (the number **minus 1**) is wrong.
+3. Open it: `sudo nano +39 /var/ossec/etc/ossec.conf`. Every tag must close with the **same name**, e.g. `<allowed-ips>208.8.8.0/24</allowed-ips>`.
+4. Save, then:
+   ```bash
+   sudo systemctl restart wazuh-manager
+   sudo systemctl restart wazuh-dashboard
+   ```
+
+### Alarms
+| Problem | Fix |
+|---|---|
+| Wazuh won't restart after adding the rules | `NUMBER1` / `NUMBER2` not replaced? Run the `sed` command from Step 2 with **your** numbers. Check the errors: `sudo grep -i "error" /var/ossec/logs/ossec.log \| tail -n 5` |
+| Rules don't fire | Test on Wazuh: `sudo /var/ossec/bin/wazuh-logtest` → paste a `LOGIN_FAILED` line **5 times** → the last one should show `id: '100410'`. If not, the number from setup **S9** is wrong |
+| Backdoor alarm doesn't fire | Is `archive … log config … logging enable` in the router config? Check: `show running-config \| section archive` |
+
+## Wireshark
+
+| Problem | Fix |
+|---|---|
+| Don't know which adapter | `ipconfig` → the one with **`208.8.8.1`** = **VMware Network Adapter VMnet8** |
+| No port-514 packets | Capturing on **VMnet8**? Backup: on Wazuh, `sudo tcpdump -i any port 514 -A` shows the same logs |
+| Filter bar turns **red** | Typo. Copy the filter exactly |
+| Wireshark shows "RSH" instead of syslog on port 514 | Normal: Wireshark guesses by port number. Use **Follow → TCP Stream** to read it |
+| Times don't match Wazuh | **View → Time Display Format → Date and Time of Day** |

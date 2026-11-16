@@ -1,6 +1,6 @@
 # Lab 4: Full guide (detailed version)
 
-> ↩️ The short step-by-step, **including the Wazuh + router setup (Part 1)**, is in the main [README](../README.md). This file has the full explanations, cheat sheet, custom Wazuh rule and troubleshooting.
+> 🗄️ **Older version** of this lab, kept for reference. The current lab is in the main [README](../../README.md). This file has the full explanations, cheat sheet, custom Wazuh rule and troubleshooting.
 
 **Day 2: Cyber Threats, Attack Investigation & AI Security** · V8 alignment: **2.3, 2.5, 4.8** (+ AI link to **2.6**) · CompTIA **Security+ (SY0-701)**
 
@@ -431,7 +431,7 @@ end
 
 | Extension | For | Where |
 |---|---|---|
-| **Investigate a bigger, prepared incident**: a password spray against 43 Windows accounts, with a practice SIEM console and a prepared Wireshark capture | Fast finishers, or a second session | [practice-incident.md](practice-incident.md) |
+| **Investigate a bigger, prepared incident**: a password spray against 43 Windows accounts, with a practice SIEM console and a prepared Wireshark capture | Fast finishers, or a second session | [practice-incident.md](../practice-incident.md) |
 | **Build a "brute force detected" alert** in Wazuh (custom rule) | Instructor demo, or advanced students | [Appendix B](#appendix-b-custom-brute-force-alert-instructor-optional) |
 
 ---
@@ -504,7 +504,7 @@ Useful clicks: **Right-click a packet → Follow → TCP Stream** to read the wh
 
 ## Appendix B: Custom brute-force alert (instructor, optional)
 
-Out of the box, Wazuh alerts on **each** failed login separately. Real SOCs add a rule that turns **many failures in a short time** into **one high-level "brute force" alert**. The file [`wazuh/local_rules.xml`](../wazuh/local_rules.xml) contains a ready-made version. Setting it up takes about 5 minutes:
+Out of the box, Wazuh alerts on **each** failed login separately. Real SOCs add a rule that turns **many failures in a short time** into **one high-level "brute force" alert**. The file [`wazuh/local_rules.xml`](../../wazuh/local_rules.xml) contains a ready-made version. Setting it up takes about 5 minutes:
 
 1. **Find the rule ID** Wazuh gives a failed router login: from Step 3.3 (`rule.id`), or on the Wazuh VM run `sudo /var/ossec/bin/wazuh-logtest`, paste this line and press **Enter**:
    ```
