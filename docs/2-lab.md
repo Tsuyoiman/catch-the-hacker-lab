@@ -91,10 +91,19 @@
    ```
    ✅ No message = success. *(Paste it **only once**, or the alarms are added twice and Wazuh won't start.)*
 
-2. Put in **your 2 numbers from setup S9**. Replace `1111` and `2222` with your numbers, then paste:
+2. Fill in **the 2 ID numbers you copied in [setup S9](1-setup.md#s9-find-the-2-rule-numbers-for-your-alarms)** (from `wazuh-logtest` → **Phase 3** → `id: '…'`).
+   In the command below, **replace `1111` with Number 1** (failed login) and **`2222` with Number 2** (config command). Leave everything else as it is:
    ```bash
    sudo sed -i 's/NUMBER1/1111/g; s/NUMBER2/2222/g' /var/ossec/etc/rules/local_rules.xml
    ```
+   *Example: if Number 1 = 4724 and Number 2 = 4721, paste* `sudo sed -i 's/NUMBER1/4724/g; s/NUMBER2/4721/g' /var/ossec/etc/rules/local_rules.xml`
+
+   ⚠️ **Don't paste it with `1111` and `2222`.** Those are placeholders. Check with:
+   ```bash
+   sudo grep -n "if_sid\|if_matched_sid" /var/ossec/etc/rules/local_rules.xml
+   ```
+   ✅ The `LAB4` rules show **your** numbers. *(`<if_sid>5716</if_sid>` is Wazuh's own example: ignore it.)*
+   *Pasted 1111/2222 by mistake? Fix it:* `sudo sed -i 's/>1111</>NUMBER-1</g; s/>2222</>NUMBER-2</g' /var/ossec/etc/rules/local_rules.xml` *(with your real numbers instead of NUMBER-1 / NUMBER-2).*
 3. Restart Wazuh:
    ```bash
    sudo systemctl restart wazuh-manager

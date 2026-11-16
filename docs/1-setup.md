@@ -292,19 +292,39 @@ Copy **one `LOGIN_FAILED` line** and **one `LOGGEDCMD` line**. Copy only from th
 %PARSER-5-CFGLOG_LOGGEDCMD: User:admin  logged command:description setup-test
 ```
 
-**3. Test them in Wazuh.** In the Wazuh SecureCRT tab:
+**3. Get the 2 ID numbers with `wazuh-logtest`.** In the **Wazuh** SecureCRT tab (prompt `[root@… ~]#`):
 ```bash
 sudo /var/ossec/bin/wazuh-logtest
 ```
-Paste the **LOGIN_FAILED** line → **Enter**. Under **`**Phase 3`**, find **`id: 'NNNN'`**.
-✍️ **Number 1 (failed login):** ________
+Wait until it says **`Type one log per line`**.
 
-Paste the **LOGGEDCMD** line → **Enter** → find **`id: 'NNNN'`**.
-✍️ **Number 2 (config command):** ________
+**3a. Paste the `LOGIN_FAILED` line → press Enter.**
+Then **scroll to `**Phase 3`** and copy the number inside **`id: '…'`**:
+```
+**Phase 3: Completed filtering (rules).
+        id: '4724'          ◄── COPY THIS NUMBER (example)
+        level: '5'
+        description: '...'
+```
+✍️ **Number 1 (failed login) = ________** ← write it down **now**, before you paste the next line.
 
-Press **Ctrl + C** to exit.
+**3b. Paste the `LOGGEDCMD` line → press Enter.**
+Again, **scroll to `**Phase 3`** and copy the number inside **`id: '…'`**:
+```
+**Phase 3: Completed filtering (rules).
+        id: '4721'          ◄── COPY THIS NUMBER (example)
+        level: '3'
+        description: '...'
+```
+✍️ **Number 2 (config command) = ________** ← write it down **now**.
 
-> 💡 Use whatever `id` is shown, even if its level is 0. *(Teacher: once you know the 2 numbers, write them on the board. They're the same for every PC with the same Wazuh version.)*
+**3c. Exit:** press **Ctrl + C**.
+
+> ⚠️ **Important**
+> - **Wazuh decides these numbers. You don't choose them.** `4724` and `4721` above are only examples. Use the numbers **your** screen shows.
+> - The output is long. If you can't see **Phase 3**, **scroll up** a little in SecureCRT.
+> - Everyone with the **same Wazuh version** gets the **same 2 numbers**. *(Teacher: write them on the board for the class.)*
+> - You'll need both numbers in **Step 2 of the lab**.
 
 **4. Clean up the test:**
 ```
