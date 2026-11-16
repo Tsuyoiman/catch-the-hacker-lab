@@ -19,8 +19,8 @@
 | # | Page | What you do | Time |
 |---|---|---|---|
 | **1** | **[Setup](docs/1-setup.md)** | Connect the router to Wazuh, paste the router config, open Wireshark | 30 min (once) |
-| **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend. **Mission cards and the detective card are built into this page**, so there's nothing else to open | 100 min |
-| 🖨️ | [Mission cards](docs/3-mission-cards.md) · [Detective card](docs/4-detective-card.md) | *Optional:* print versions for the teacher | — |
+| **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend. **The mission and the detective card are built into this page**, so there's nothing else to open | 100 min |
+| 🖨️ | [Detective card](docs/4-detective-card.md) | *Optional:* print version | — |
 | **3** | **[Quick fixes](docs/5-quick-fixes.md)** 🛠️ | If something doesn't work | — |
 
 ---
@@ -88,15 +88,15 @@ In October 2023, attackers abused a flaw in the web interface of Cisco IOS XE (t
 |---|---|---|
 | 1. 😲 See a password | Log in with Telnet → see the password in Wireshark → compare with SSH | **Encryption**: why we never use Telnet |
 | 2. 🛠️ Add the alarms | Paste the Wazuh rules | **Detection engineering**: a SIEM only knows its rules |
-| 3. 🔴 Be the hacker | Follow a **secret mission card** on **your own router** | **Attacker behaviour**: break in, stay (backdoor), hide |
+| 3. 🔴 Be the hacker | Do the mission on **your own router**, with **your own secret choices** | **Attacker behaviour**: break in, stay (backdoor), hide |
 | 4. 🔄 Move one seat | Move to the **next PC** | — |
 | 5. 🔵 Be the detective | Investigate the neighbour's attack: Wazuh + Wireshark + router history | **Investigation, correlation, timelines** |
-| 6. 🎭 Reveal + score | The owner reads their card, and the detective scores out of 12 | What was missed, and why |
+| 6. 🎭 Reveal + score | The owner reads their choices, and the detective scores out of 12 | What was missed, and why |
 | 7. 🛡️ Defend | Back to your seat: delete the backdoor, `login block-for` | **Response + account protection** |
 | 8. ✅ Wrap-up | 5 takeaways | — |
 
 **Teaching tips**
-- 🤫 **Keep mission cards secret.** The surprise at the reveal is what makes it stick.
+- 🤫 **Keep each hacker's choices secret.** The surprise at the reveal is what makes it stick.
 - ❓ **Don't give detectives the answers.** Ask *"How do you know? Show me the evidence."*
 - 🏆 **Use a scoreboard** on the whiteboard. It keeps energy high.
 - 🧪 **Do the whole lab once yourself** before class (setup + one mission).
@@ -129,7 +129,6 @@ In October 2023, attackers abused a flaw in the web interface of Cisco IOS XE (t
 ├── docs/
 │   ├── 1-setup.md                ← Part 1: setup (once)
 │   ├── 2-lab.md                  ← Part 2: the lab, step by step
-│   ├── 3-mission-cards.md        ← 22 secret missions (print)
 │   ├── 4-detective-card.md       ← detective questions + scoring (print)
 │   ├── 5-quick-fixes.md          ← troubleshooting
 │   ├── practice-incident.md      ← optional extra: prepared Windows incident
