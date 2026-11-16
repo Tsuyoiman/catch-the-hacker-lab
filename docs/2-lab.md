@@ -273,7 +273,7 @@ You're now at your **neighbour's PC**, and you're the **detective** for their ro
 
 🎯 **Teaches:** **incident response** and **account protection**.
 
-1. Go back to **your own** PC. At `R-XX#`, paste. Replace `<backdoor-name>` with the account from **your** card and `<MY-WAZUH-IP>` with your Wazuh IP:
+1. Go back to **your own** PC. Paste in **your router**. Replace `<backdoor-name>` with **your** backdoor name (from your paper) and `<MY-WAZUH-IP>` with your Wazuh IP:
    ```
    configure terminal
    no username <backdoor-name>
