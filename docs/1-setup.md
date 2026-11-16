@@ -142,14 +142,14 @@ sudo ss -tulpn | grep 514
    exit
    username admin privilege 15 secret <router-password>
    hostname R-XX
-   ip domain-name lab.local
+   ip domain name lab.local
    crypto key generate rsa modulus 2048
    line vty 0 4
    login local
    transport input ssh
    end
    ```
-   *(If `crypto key generate` says keys already exist and asks to replace them, type `yes`.)*
+   *(If `crypto key generate` says keys already exist and asks to replace them, type `yes`. On older routers where `ip domain name` is rejected, use `ip domain-name lab.local` instead.)*
 
 ### 5.2 Set SecureCRT to paste slowly (once)
 Routers can drop letters if text arrives too fast.

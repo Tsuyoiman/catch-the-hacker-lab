@@ -11,7 +11,7 @@ Find your problem, then do the fix.
 | Problem | Fix |
 |---|---|
 | SecureCRT can't connect to `208.8.8.220` | Router fully booted? Router network adapter = **VMnet8 (NAT)**? From the PC: `ping 208.8.8.220`. Redo setup **S5.1** in the router's VMware window |
-| SSH refused / "connection closed" on a new router | In the router's VMware window: `enable` → `configure terminal` → `hostname R-XX` → `ip domain-name lab.local` → `crypto key generate rsa modulus 2048` → `end` |
+| SSH refused / "connection closed" on a new router | In the router's VMware window: `enable` → `configure terminal` → `hostname R-XX` → `ip domain name lab.local` → `crypto key generate rsa modulus 2048` → `end` |
 | SSH lands at **`Router>`**, `en` says **"% No password set"** | Your account isn't full admin. Paste the **S5.4** block again (it sets `privilege 15` and `enable secret`). If you can't get in at all, type S5.1 in the router's **VMware window** |
 | Paste goes wrong (missing letters, `% Invalid input`) | SecureCRT **Line send delay = 50 ms** (setup **S5.2**), then paste again. Repeating these commands is safe |
 | Typed a wrong password in the router's **VMware window**, nothing logged | Use **SecureCRT → SSH**. Only remote (SSH/Telnet) logins are logged |
