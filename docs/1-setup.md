@@ -372,7 +372,8 @@ end
 ```
 
 ---
+✅ **Setup done!**
+**Want students to attack each other's routers across the room** (instead of moving seats)? After this setup, add a second **Bridged** adapter
+➡️ Continue to **[The lab](2-lab.md)**.
 
-✅ **Setup done!** ➡️ Continue to **[The lab](2-lab.md)**.
 
-> 🌐 **Want students to attack each other's routers across the room** (instead of moving seats)? After this setup, add a second **Bridged** adapter and follow the **[Cross-PC version](6-cross-pc-version.md)**.
