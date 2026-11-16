@@ -110,9 +110,11 @@ sudo nano /var/ossec/etc/ossec.conf
 ```
 ✅ Only **`done`** appears. *(An error? See [Quick fixes](5-quick-fixes.md#broken-ossecconf).)*
 
-**6. Open the firewall, then restart Wazuh:**
+**6. Open the firewall (514 = router logs, 443 = dashboard web page), then restart Wazuh:**
 ```bash
-sudo firewall-cmd --permanent --add-port=514/tcp ; sudo firewall-cmd --reload
+sudo firewall-cmd --permanent --add-port=514/tcp
+sudo firewall-cmd --permanent --add-port=443/tcp
+sudo firewall-cmd --reload
 sudo systemctl restart wazuh-manager
 sudo systemctl status wazuh-manager --no-pager
 ```
@@ -237,7 +239,14 @@ show logging | include Logging to
 2. Certificate warning → **Advanced → Continue**.
 3. Log in with the dashboard account from your teacher.
 
-✅ The **Overview** page with alert counts. *(Stuck on "API Connections / Offline"? See [Quick fixes](5-quick-fixes.md).)*
+✅ The **Overview** page with alert counts.
+
+> ⚠️ **Page doesn't open** ("This site can't be reached")? The firewall is blocking the web page. On Wazuh, type:
+> ```bash
+> sudo firewall-cmd --permanent --add-port=443/tcp
+> sudo firewall-cmd --reload
+> ```
+> Then refresh the browser. *(Stuck on "API Connections / Offline"? See [Quick fixes](5-quick-fixes.md#wazuh).)*
 
 ---
 

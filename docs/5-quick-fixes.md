@@ -47,7 +47,8 @@ sudo firewall-cmd --permanent --add-port=514/tcp ; sudo firewall-cmd --reload
 
 | Problem | Fix |
 |---|---|
-| Dashboard won't open | Use **`https://`**. Wait **2–3 minutes** after the VM boots |
+| **Dashboard won't open** ("This site can't be reached") | Open the web port on Wazuh: `sudo firewall-cmd --permanent --add-port=443/tcp` then `sudo firewall-cmd --reload`, and refresh. Also: use **`https://`**, check the IP with `ip a`, and wait **2–3 minutes** after the VM boots |
+| "Wazuh dashboard server is not ready yet" | Wait 2–3 min. Still there? `sudo systemctl restart wazuh-indexer`, wait 60 s, `sudo systemctl restart wazuh-dashboard` |
 | Dashboard stuck on **"API Connections / Offline"** | Wazuh: `sudo systemctl status wazuh-manager --no-pager`. If **failed**, `ossec.conf` has a mistake: see [Broken ossec.conf](#broken-ossecconf). If **running**: `sudo systemctl restart wazuh-dashboard`, wait 2 min, refresh |
 | Dashboard shows login failures that aren't from the router | Those are Wazuh's own Linux logins. Use **Events** and search `full_log:LOGIN_FAILED` |
 | Search finds nothing | Time = **Last 15 minutes** / **Last 1 hour**. Try `full_log:*LOGIN_FAILED*` or just `LOGIN_FAILED` |
