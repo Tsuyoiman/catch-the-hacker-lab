@@ -312,12 +312,11 @@ Your new alarms **don't start from zero**. They **build on top of** the built-in
 There are two ways. **Method A (dashboard)** is the easiest and most reliable. **Method B (`wazuh-logtest`)** shows the Phase 1–3 breakdown if you want to see how Wazuh decodes a log.
 
 **First, make real events.** In SecureCRT:
-- open a new SSH session to `208.8.8.220`, type **one wrong password**, then log in correctly, then
-- at `R-XX#`:
+- open a new SSH session to `208.8.8.220` and type **one wrong password** (this makes a `LOGIN_FAILED`), then
+- log in correctly and run a **config command** (this makes a `LOGGEDCMD`):
   ```
   configure terminal
-  interface loopback 99
-  description setup-test
+  username testcmd privilege 15 secret Test123
   end
   ```
 
@@ -325,6 +324,23 @@ There are two ways. **Method A (dashboard)** is the easiest and most reliable. *
 Wazuh → **Threat Hunting → Events** → time **Last 15 minutes**:
 - Search `full_log:LOGIN_FAILED` → click **▸** to open the event → read **`rule.id`**. ✍️ **Number 1 (failed login) = ____**
 - Search `full_log:LOGGEDCMD` → open the event → read **`rule.id`**. ✍️ **Number 2 (config command) = ____**
+
+> ⚠️ **`full_log:LOGGEDCMD` shows nothing?** A `LOGGEDCMD` event only exists after you **type a config command** on a router that is set to **send** config commands. Check both:
+> 1. **You ran a config command** — e.g. the `username testcmd …` above. Just logging in does **not** create one.
+> 2. **The router sends them** — on the router, `show running-config | section archive` must include **`notify syslog contenttype plaintext`**. If it's missing, paste:
+>    ```
+>    configure terminal
+>    archive
+>    log config
+>    logging enable
+>    notify syslog contenttype plaintext
+>    hidekeys
+>    end
+>    write memory
+>    ```
+> Then run the `username testcmd …` command again and search once more.
+>
+> 🧹 **Clean up the test account** when done: `configure terminal` → `no username testcmd` → `end`.
 
 #### Method B — see the Phases with `wazuh-logtest`
 This is the tool that shows **Phase 1 → 2 → 3**. In the **Wazuh** SecureCRT tab:
@@ -348,13 +364,15 @@ Read the output:
 
 > ⚠️ **Important:** paste a **real line with the `165: *Nov 16 ...` prefix**, exactly as the router sends it. A hand-typed line **without** the prefix can match a *different* rule and give you the wrong number (we hit this: a clean line gave `2501`, but the real logs are `4724`).
 
-**Finally, clean up:**
+**Finally, clean up the test account:**
 ```
 configure terminal
-no interface loopback 99
+no username testcmd
 end
 ```
 
 ---
 
 ✅ **Setup done!** ➡️ Continue to **[The lab](2-lab.md)**.
+
+> 🌐 **Want students to attack each other's routers across the room** (instead of moving seats)? After this setup, add a second **Bridged** adapter and follow the **[Cross-PC version](6-cross-pc-version.md)**.
