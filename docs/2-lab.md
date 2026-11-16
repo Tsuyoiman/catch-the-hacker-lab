@@ -91,19 +91,23 @@
    ```
    ✅ No message = success. *(Paste it **only once**, or the alarms are added twice and Wazuh won't start.)*
 
-2. Fill in **the 2 ID numbers you copied in [setup S9](1-setup.md#s9-find-the-2-rule-numbers-for-your-alarms)** (from `wazuh-logtest` → **Phase 3** → `id: '…'`).
-   In the command below, **replace `1111` with Number 1** (failed login) and **`2222` with Number 2** (config command). Leave everything else as it is:
+2. Fill in the 2 rule numbers. **For Wazuh 4.12.0 (our class version) they are `2501` and `4715`**, so just paste:
    ```bash
-   sudo sed -i 's/NUMBER1/1111/g; s/NUMBER2/2222/g' /var/ossec/etc/rules/local_rules.xml
+   sudo sed -i 's/NUMBER1/2501/g; s/NUMBER2/4715/g' /var/ossec/etc/rules/local_rules.xml
    ```
-   *Example: if Number 1 = 4724 and Number 2 = 4721, paste* `sudo sed -i 's/NUMBER1/4724/g; s/NUMBER2/4721/g' /var/ossec/etc/rules/local_rules.xml`
+   | Number | Wazuh rule | Used by |
+   |---|---|---|
+   | **2501** | the built-in rule for a **failed login** (`LOGIN_FAILED`) | Brute-force + AI-trick alarms |
+   | **4715** | the built-in rule for a **Cisco notification** (`LOGGEDCMD` config command) | Backdoor alarm |
 
-   ⚠️ **Don't paste it with `1111` and `2222`.** Those are placeholders. Check with:
+   > 💡 **Different Wazuh version?** Your numbers may differ. Find them in [setup S9](1-setup.md#s9-find-the-2-rule-numbers-for-your-alarms) (`wazuh-logtest` → **Phase 3** → `id: '…'`) and use those instead of 2501 and 4715.
+
+   **Check:**
    ```bash
    sudo grep -n "if_sid\|if_matched_sid" /var/ossec/etc/rules/local_rules.xml
    ```
-   ✅ The `LAB4` rules show **your** numbers. *(`<if_sid>5716</if_sid>` is Wazuh's own example: ignore it.)*
-   *Pasted 1111/2222 by mistake? Fix it:* `sudo sed -i 's/>1111</>NUMBER-1</g; s/>2222</>NUMBER-2</g' /var/ossec/etc/rules/local_rules.xml` *(with your real numbers instead of NUMBER-1 / NUMBER-2).*
+   ✅ The `LAB4` rules show **2501, 4715, 2501**. *(`<if_sid>5716</if_sid>` is Wazuh's own example: ignore it.)*
+
 3. Restart Wazuh:
    ```bash
    sudo systemctl restart wazuh-manager

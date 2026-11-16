@@ -323,7 +323,7 @@ Again, **scroll to `**Phase 3`** and copy the number inside **`id: '…'`**:
 > ⚠️ **Important**
 > - **Wazuh decides these numbers. You don't choose them.** `4724` and `4721` above are only examples. Use the numbers **your** screen shows.
 > - The output is long. If you can't see **Phase 3**, **scroll up** a little in SecureCRT.
-> - Everyone with the **same Wazuh version** gets the **same 2 numbers**. *(Teacher: write them on the board for the class.)*
+> - Everyone with the **same Wazuh version** gets the **same 2 numbers**. **On Wazuh 4.12.0 they are `2501` (failed login) and `4715` (config command)**, so you can check yours against these.
 > - You'll need both numbers in **Step 2 of the lab**.
 
 **4. Clean up the test:**
