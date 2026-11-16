@@ -51,22 +51,61 @@
 
 🎯 **Teaches:** a SIEM only knows what its **rules** tell it, and you can write your own (**detection engineering**).
 
-1. In the **Wazuh** SecureCRT tab, open the rules file:
+1. In the **Wazuh** SecureCRT tab (prompt `[root@… ~]#`), **copy this whole box → right-click → Paste → Enter**. It adds the 3 alarms to Wazuh in one go:
    ```bash
-   sudo nano /var/ossec/etc/rules/local_rules.xml
+   sudo tee -a /var/ossec/etc/rules/local_rules.xml > /dev/null <<'EOF'
+   <group name="lab4,cisco_ios,">
+
+     <!-- ALARM 1: 5 failed router logins within 2 minutes = brute force -->
+     <rule id="100410" level="10" frequency="5" timeframe="120">
+       <if_matched_sid>NUMBER1</if_matched_sid>
+       <match>LOGIN_FAILED</match>
+       <description>LAB4 ALARM: Brute force - 5 failed router logins in 2 minutes</description>
+       <mitre>
+         <id>T1110</id>
+       </mitre>
+       <group>authentication_failures,</group>
+     </rule>
+
+     <!-- ALARM 2: a new full-admin (privilege 15) account is created = backdoor -->
+     <rule id="100411" level="12">
+       <if_sid>NUMBER2</if_sid>
+       <match>LOGGEDCMD</match>
+       <regex type="pcre2">username (?!admin\b)\S+ privilege 15</regex>
+       <description>LAB4 ALARM: Backdoor - new admin account created on router</description>
+       <mitre>
+         <id>T1136</id>
+       </mitre>
+     </rule>
+
+     <!-- ALARM 3: a login username that contains instructions for an AI = prompt injection -->
+     <rule id="100412" level="10">
+       <if_sid>NUMBER1</if_sid>
+       <match>LOGIN_FAILED</match>
+       <regex type="pcre2">(?i)\[user: [^\]]*(ignore|benign|pentest|false-positive|instruction|authorised)</regex>
+       <description>LAB4 ALARM: AI trick - instruction-like text in a login username</description>
+     </rule>
+
+   </group>
+   EOF
    ```
-2. Press **Alt + /** to jump to the end. Paste **all** of [`wazuh/local_rules.xml`](../wazuh/local_rules.xml) at the bottom.
-3. Save: **Ctrl + O** → **Enter** → **Ctrl + X**.
-4. Put in **your 2 numbers from setup S9**. Replace `1111` and `2222` with your numbers:
+   ✅ No message = success. *(Paste it **only once**, or the alarms are added twice and Wazuh won't start.)*
+
+2. Put in **your 2 numbers from setup S9**. Replace `1111` and `2222` with your numbers, then paste:
    ```bash
    sudo sed -i 's/NUMBER1/1111/g; s/NUMBER2/2222/g' /var/ossec/etc/rules/local_rules.xml
    ```
-5. Restart Wazuh:
+3. Restart Wazuh:
    ```bash
    sudo systemctl restart wazuh-manager
    sudo systemctl status wazuh-manager --no-pager
    ```
    ✅ **active (running)**. *(Failed? See [Quick fixes](5-quick-fixes.md#alarms).)*
+4. **Check the alarms are in:**
+   ```bash
+   sudo grep -c "LAB4 ALARM" /var/ossec/etc/rules/local_rules.xml
+   ```
+   ✅ It prints **`3`**. *(Shows `6`? You pasted twice. See [Quick fixes](5-quick-fixes.md#alarms).)*
 
 **Your new alarms:**
 
