@@ -22,6 +22,7 @@
 | **2** | **[The lab](docs/2-lab.md)** | Password hook → alarms → hacker → detective → reveal → defend. **The mission and the detective card are built into this page**, so there's nothing else to open | 100 min |
 | 🖨️ | [Detective card](docs/4-detective-card.md) | *Optional:* print version | — |
 | **3** | **[Quick fixes](docs/5-quick-fixes.md)** 🛠️ | If something doesn't work | — |
+| 🌐 | **[Cross-PC version](docs/6-cross-pc-version.md)** | *Optional:* students **attack each other's routers over the network** and defend their own, instead of moving seats | +10 min setup |
 
 ---
 
