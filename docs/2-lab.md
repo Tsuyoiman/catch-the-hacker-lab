@@ -202,7 +202,7 @@ GigabitEthernet2   10.3.3.~~     YES  up  up     ← Bridged, for attacks
 
 > ### 🔴 THE MISSION — attack your target/classmate's router IP (e.g. `10.3.3.~~`)
 >
-> **1. Break in:** SecureCRT → ⚡ → **SSH2** → Hostname = **your target's IP** → user `admin` → try your usernames with **wrong passwords**, as many times as you chose. ✍️ Time: ____
+> **1. Break in:** SecureCRT → ⚡ → **SSH2** → Hostname = **your target's/Classmate's Router IP** → user `admin` → try your usernames with **wrong passwords**, as many times as you chose. ✍️ Time: ____
 >
 > **2. Get in:** connect again and log in **correctly** as `admin` (same class password). ✍️ Time: ____
 >
@@ -286,7 +286,7 @@ write memory
 
 **5.3 Layer 2 — only allow YOUR PC to connect (`access-class`).** This blocks every other PC **before the password is even asked** — so even with the correct password, a classmate is refused.
 
-Replace `10.3.3.1~~` with **your own PC's IP** Example (PC 61 → `10.3.3.161`, PC 62 → `10.3.3.162`):
+Replace `10.3.3.1~~` with **your own PC's IP** Example: (PC 61 → `10.3.3.161`, PC 62 → `10.3.3.162`):
 ```
 configure terminal
 ip access-list standard ADMIN-ONLY
@@ -323,7 +323,7 @@ write memory
 🎯 **Teaches:** proving a control works.
 
 Attack your **target again** (they've also just defended theirs):
-1. SecureCRT → SSH to your target (`10.3.3.62`).
+1. SecureCRT → SSH to your target/classmate's router ip Example: (`10.3.3.62`).
 2. 🚫 **Layer 2 (access-class):** the connection is **refused immediately** — *"Connection closed"*, **no login prompt**, because your IP isn't allowed. A correct password is useless.
 3. If a target only turned on Layer 1, type **3 wrong passwords quickly** → 🚫 the router **blocks all logins for 5 minutes**.
 
